@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+X-Nemo-Application-Type=silica-qt5
+Icon=harbour-pipes
+Encoding=UTF-8
+Version=1.0
+Name=Pipes
+Comment=Classic puzzle game
+Exec=sailfish-qml harbour-pipes
+Name=Pipes
+Name[de]=Ruhren
+Name[pl]=Rury
+Name[fi]=Putkia
+
+[X-Sailjail]
+OrganizationName=pl.arusekk
+ApplicationName=pipes
+Permissions=
