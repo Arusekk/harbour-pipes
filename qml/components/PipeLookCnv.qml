@@ -23,7 +23,7 @@ Rectangle {
                 width: halfWidth * 2 | (parent.width & 1)
                 height: parent.height
                 anchors.centerIn: parent
-                anchors.verticalCenterOffset: -width - 2
+                anchors.verticalCenterOffset: -height/3
                 radius: width
             }
         }
