@@ -1,0 +1,41 @@
+name: Build RPM
+on: [push, pull_request]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        sfdk-version: [3.9.6]
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+#    - name: Cache for SFDK
+#      uses: actions/cache@v3
+#      id: cache-sfdk
+#      with:
+#        path: |
+#          ~/SailfishOS
+#        key: sfdk-${{ matrix.sfdk-version }}
+    - name: Install deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends libqt5gui5
+    - name: Install SFDK ${{ matrix.sfdk-version }}
+      run: |
+        wget https://releases.sailfishos.org/sdk/installers/${{ matrix.sfdk-version }}/SailfishSDK-${{ matrix.sfdk-version }}-linux64-online.run
+        chmod +x SailfishSDK-*.run
+        QT_QPA_PLATFORM=minimal ./SailfishSDK-*.run --verbose non-interactive=1 accept-licenses=1 build-engine-type=docker
+        rm SailfishSDK-*.run
+    - name: Build package
+      run: |
+        sed -i 's/^\(Version\s*:\s*\).*/\1'"$(git describe --tags | cut -c2-)/" rpm/harbour-*.yaml
+        export PATH="$PATH:$HOME/SailfishOS/bin"
+        sfdk config target=SailfishOS-4.4.0.58-aarch64.default
+        sfdk build
+    - uses: actions/upload-artifact@v3
+      with:
+        name: RPM packages
+        path: RPMS/
