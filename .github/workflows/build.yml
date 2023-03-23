@@ -5,7 +5,8 @@ jobs:
   build:
     strategy:
       matrix:
-        sfdk-version: [3.9.6]
+        sfdk-version: [3.10.4]
+        target: [SailfishOS-4.4.0.58-i486]
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
@@ -29,11 +30,15 @@ jobs:
         chmod +x SailfishSDK-*.run
         QT_QPA_PLATFORM=minimal ./SailfishSDK-*.run --verbose non-interactive=1 accept-licenses=1 build-engine-type=docker
         rm SailfishSDK-*.run
+    - name: Install target ${{ matrix.target }}
+      run: |
+        export PATH="$PATH:$HOME/SailfishOS/bin"
+        sfdk tools target install ${{ matrix.target }}
     - name: Build package
       run: |
         sed -i 's/^\(Version\s*:\s*\).*/\1'"$(git describe --tags | cut -c2-)/" rpm/harbour-*.yaml
         export PATH="$PATH:$HOME/SailfishOS/bin"
-        sfdk config target=SailfishOS-4.4.0.58-aarch64.default
+        sfdk config target=${{ matrix.target }}
         sfdk build
     - uses: actions/upload-artifact@v3
       with:
