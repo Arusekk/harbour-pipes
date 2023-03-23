@@ -1,5 +1,7 @@
 # harbour-pipes
 
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/Arusekk/harbour-pipes/build.yml?branch=master&logo=GitHub)
+
 Puzzle game: rotate pipes to connect all the pieces together.
 
 Inspired by excellent timeless classics like [PipesJ2ME] and [KNetWalk];
@@ -44,9 +46,12 @@ This is because first a random solved puzzle is generated, and then scrabmled ar
 .
 
 <details>
+
 The pipes form a [tree] on a grid.  No connection needs to be left hanging (think: the pipes cannot be leaky), all the pipes must be connected together (think: the fluid must be able to get everywhere), there is only one way for the fluid to reach every terminal pipe (think: every pipe is one-way, no cycles/circles).
 
 One good way to solve the puzzle is starting with connections that are sure (pipes next to pluses and pipes next to board edges).  Then you can match pipe ends to pipe ends, and air gaps to air gaps (of pipes that you are sure are correct).
 
 [tree]: https://en.wikipedia.org/wiki/Tree_(graph_theory)
+
+
 </details>
